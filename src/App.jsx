@@ -1,17 +1,22 @@
 import { useState } from 'react'
 import Loginform from './component/Loginform'
-import requestService from '../services/login'
+import userService from '../services/login'
+import blogService from '../services/blog'
+import Dashboard from './component/Dashboard'
 
 const App=()=> {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser]=useState(null)
-  const [errorMessage, setErrorMessage]=useState(null)
+  const [errorMessage, setErrorMessage]=useState(null) 
+  const[title,setTitle]=useState('')
+  const[author,setAuthor]=useState('')
+  const[url,setUrl]=useState('')
 
   const handleLogin =async(event)=>{
     event.preventDefault()
     try{
-      const user=requestService.login({ username,password })
+      const user=await userService.login({ username,password })
       setUser(user)
       setUsername('')
       setPassword('')
@@ -27,13 +32,19 @@ const App=()=> {
     <div>
       {errorMessage && <p>{errorMessage}</p>}
       { user 
-        ? <p>post form</p>
+        ? <Dashboard 
+          user={user} setUser={setUser}
+          title={title} setTitle={setTitle}
+          url={url} setUrl={setUrl}
+          author={author} setAuthor={setAuthor}
+        />
         :<Loginform 
           username={username} 
           password={password} 
           setUsername={setUsername}
           setPassword={setPassword}
-          handleLogin={handleLogin} />
+          handleLogin={handleLogin} 
+        />
       }
     </div>)
 }
