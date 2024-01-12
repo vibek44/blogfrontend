@@ -20,10 +20,14 @@ const App=()=> {
       .then(initialBlog=>setBlogs(initialBlog))
   },[])
 
+  
+
   const handleLogin =async(event)=>{
     event.preventDefault()
     try{
       const user=await userService.login({ username,password })
+
+      window.localStorage.setItem('loggedAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
