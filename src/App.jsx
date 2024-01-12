@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Loginform from './component/Loginform'
 import userService from '../services/login'
 import blogService from '../services/blog'
@@ -12,11 +12,19 @@ const App=()=> {
   const[title,setTitle]=useState('')
   const[author,setAuthor]=useState('')
   const[url,setUrl]=useState('')
+  const [blogs, setBlogs]=useState([])
+
+  useEffect(() => {
+    blogService
+      .getAll()
+      .then(initialBlog=>setBlogs(initialBlog))
+  },[])
 
   const handleLogin =async(event)=>{
     event.preventDefault()
     try{
       const user=await userService.login({ username,password })
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -28,6 +36,10 @@ const App=()=> {
     }
     //console.log('logging with', username,password)
   }
+
+  const handleBlogAdd=()=>{
+    
+  }
   return (
     <div>
       {errorMessage && <p>{errorMessage}</p>}
@@ -37,6 +49,8 @@ const App=()=> {
           title={title} setTitle={setTitle}
           url={url} setUrl={setUrl}
           author={author} setAuthor={setAuthor}
+          blogs={blogs}
+          handleBlogAdd={handleBlogAdd}
         />
         :<Loginform 
           username={username} 
