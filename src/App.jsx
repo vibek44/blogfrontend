@@ -20,7 +20,14 @@ const App=()=> {
       .then(initialBlog=>setBlogs(initialBlog))
   },[])
 
-  
+  useEffect(()=>{
+    const loggedUserJSON=window.localStorage.getItem('loggedAppUser')
+    if(loggedUserJSON){
+      const user=JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  },[])
 
   const handleLogin =async(event)=>{
     event.preventDefault()
