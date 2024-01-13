@@ -51,6 +51,12 @@ const App=()=> {
   const handleBlogAdd=()=>{
     
   }
+  const handleSignout=()=>{
+    window.localStorage.removeItem('loggedAppUser')
+    //window.localStorage.clear()
+    setUser(null) 
+  }
+ 
   return (
     <div>
       {errorMessage && <p>{errorMessage}</p>}
@@ -61,6 +67,7 @@ const App=()=> {
           url={url} setUrl={setUrl}
           author={author} setAuthor={setAuthor}
           blogs={blogs}
+          handleSignout={handleSignout}
           handleBlogAdd={handleBlogAdd}
         />
         :<Loginform 
