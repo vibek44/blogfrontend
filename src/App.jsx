@@ -1,4 +1,5 @@
 import { useState,useEffect } from 'react'
+import Notification from './component/Notification'
 import Loginform from './component/Loginform'
 import userService from '../services/login'
 import blogService from '../services/blog'
@@ -8,10 +9,8 @@ const App=()=> {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser]=useState(null)
-  const [errorMessage, setErrorMessage]=useState(null) 
-  const[title,setTitle]=useState('')
-  const[author,setAuthor]=useState('')
-  const[url,setUrl]=useState('')
+  const [message, setMessage]=useState({ notification:null
+    ,errorMessage:null }) 
   const [blogs, setBlogs]=useState([])
 
   useEffect(() => {
@@ -39,17 +38,13 @@ const App=()=> {
       setUser(user)
       setUsername('')
       setPassword('')
-    }catch(exception){
-      setErrorMessage('Authorization failed.')
+    }catch(error){
+      setMessage({...message,errorMessage:'Authorization failed.'})
       setTimeout(()=>{
-        setErrorMessage(null)
+        setMessage({...message,errorMessage:null})
       },3000)
     }
     //console.log('logging with', username,password)
-  }
-
-  const handleBlogAdd=()=>{
-    
   }
   const handleSignout=()=>{
     window.localStorage.removeItem('loggedAppUser')
@@ -59,16 +54,13 @@ const App=()=> {
  
   return (
     <div>
-      {errorMessage && <p>{errorMessage}</p>}
+      {(message.notification || message.errorMessage ) && <Notification message={message}/>}
       { user 
         ? <Dashboard 
           user={user} setUser={setUser}
-          title={title} setTitle={setTitle}
-          url={url} setUrl={setUrl}
-          author={author} setAuthor={setAuthor}
-          blogs={blogs}
+          blogs={blogs} setBlogs={setBlogs}
+          message={message} setMessage={setMessage}
           handleSignout={handleSignout}
-          handleBlogAdd={handleBlogAdd}
         />
         :<Loginform 
           username={username} 
