@@ -1,28 +1,22 @@
 import { useState } from 'react'
 import Blogform from './Blogform'
 import Blog from './Blog'
-import blogService from '../../services/blog'
+import Togglable from './Togglable'
 
-const Dashboard=({user,blogs,setBlogs,setErrorMessage,handleSignout})=>{
+
+const Dashboard=({ user,blogs,handleSignout,handleBlogAdd,handleBlogLike,handleBlogRemove,noteRef }) => {
   const[title,setTitle]=useState('')
   const[author,setAuthor]=useState('')
   const[url,setUrl]=useState('')
+  const sortedBlogs=blogs.toSorted((a,b) => b.likes-a.likes)
 
-  const handleBlogAdd=async(event)=>{
+
+  const addBlog=(event) => {
     event.preventDefault()
-    const newBlog={title,author,url}
-    try{
-      const blog =await blogService.create(newBlog)
-      setBlogs(blogs.concat(blog))
-      setTitle('') 
-      setAuthor('')
-      setUrl('')
-    }catch(error){
-      setErrorMessage(error.response.data.error)
-      setTimeout(()=>{
-        setErrorMessage(null)
-      }, 3000)
-    }
+    handleBlogAdd({ title,author,url })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return(
@@ -30,15 +24,17 @@ const Dashboard=({user,blogs,setBlogs,setErrorMessage,handleSignout})=>{
       <p>Logged in {user.username} <button onClick={ handleSignout }>
         logout</button>
       </p>
-      <Blogform  
-        title={title} setTitle={setTitle}
-        author={author} setAuthor={setAuthor}
-        url={url} setUrl={setUrl}
-        handleBlogAdd={handleBlogAdd}
-      />
+      <Togglable buttonlabel='Create newblog' ref={noteRef}>
+        <Blogform
+          title={title} setTitle={setTitle}
+          author={author} setAuthor={setAuthor}
+          url={url} setUrl={setUrl}
+          addBlog={addBlog}
+        />
+      </Togglable>
       <h3>Blogs</h3>
       {
-        blogs.map( blog=> <Blog key={blog.id} blog={blog}/> )
+        sortedBlogs.map( blog => <Blog key={blog.id} user={user} blog={blog} handleBlogLike={handleBlogLike} handleBlogRemove={handleBlogRemove}/> )
       }
     </>
   )
