@@ -1,6 +1,6 @@
 import '../Styles/notification.css'
 
-const Notification=({message})=> {
+const Notification=({ message }) => {
   if(message.notification===null && message.errorMessage===null){
     return null
   }else if(message.notification){
