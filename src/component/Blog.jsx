@@ -30,13 +30,17 @@ const Blog=({ blog,user,handleBlogLike,handleBlogRemove }) => {
       <button onClick={handleShow}>{showDetail?'hide':'view'}</button>
       {showDetail
         ?<div>
-          <p>{blog.title}</p>
-          <a>{blog.url}</a>
+          <p> { blog.title } </p>
+          <p> { blog.url }</p>
+          <p> { blog.author } </p>
           <p><button onClick={handleEdit}>like</button> {blog.likes}</p>
           <p>{blog.user.name}</p>
           {(blog.user.username===user.username)&&<button onClick={() => handleBlogRemove(blog)}>remove</button>}
         </div>
-        :<p> {blog.title} <b>By-{blog.user.name}</b></p>
+        :<div>
+          <p className='title'> {blog.title} </p>
+          <p className='author'><b>By-{blog.author}</b></p>
+        </div>
       }
     </div>
   )
