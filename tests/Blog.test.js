@@ -21,7 +21,7 @@ test('component renders title and author by default',() => {
   )
 })
 
-test.only('component renders url and likes when button is clicked for details',async() => {
+test('component renders url and likes when button is clicked for details',async() => {
 
   const blog={
     title: 'Curbs tips on Sync and async executions',
@@ -48,6 +48,40 @@ test.only('component renders url and likes when button is clicked for details',a
   screen.debug(element)
   expect(element).toBeDefined()
   expect(element2).toBeDefined()
+
+})
+
+test.only('when like button is clicked twice,event handler component receieved is called twice ',async() => {
+
+  const blog={
+    title: 'shout out to health blending guide',
+    author: 'Food matters',
+    url: 'https://www.foodmatters.com/',
+    likes: 20,
+    user: {
+      username: 'bhim',
+      name: 'bhim',
+      id: '65982042496a5febabf94716'
+    },
+    id: '65a149e80b31643208ba5677'
+  }
+  const user= {
+    username: 'bhim',
+    name: 'bhim',
+    id: '65982042496a5febabf94716'
+  }
+
+  const handleBlogLike=jest.fn()
+  render(<Blog blog={blog} user={user} handleBlogLike={handleBlogLike} />)
+
+  const user1=userEvent.setup()
+  const button=screen.getByText('view')
+  await user1.click(button)
+  const buttonlikes=screen.getByText('like')
+  await user1.click(buttonlikes)
+  await user1.click(buttonlikes)
+  //screen.debug(element)
+  expect(handleBlogLike.mock.calls).toHaveLength(2)
 
 })
 
