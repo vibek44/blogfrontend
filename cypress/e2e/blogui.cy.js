@@ -8,4 +8,13 @@ describe('Blog App', function(){
     cy.contains('password')
   })
 
+  it.only('user can login',function(){
+    cy.contains('login').click()
+    cy.get('input:first').type('chhetri')
+    cy.get('input:last').type('chhetri123')
+    cy.get('#submitbutton').click()
+    cy.contains('Logged in chhetri')
+
+  })
+
 })
