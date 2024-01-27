@@ -36,6 +36,7 @@ describe('Blog App', function(){
       cy.get('#author').type('grisma ritu')
       cy.get('#url').type('https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test')
       cy.get('#blogsubmit').click()
+      cy.contains('grisma ritu')
       cy.contains('The Script is to execute')
     })
   })
