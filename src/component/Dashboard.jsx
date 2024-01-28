@@ -5,19 +5,8 @@ import Togglable from './Togglable'
 
 
 const Dashboard=({ user,blogs,handleSignout,handleBlogAdd,handleBlogLike,handleBlogRemove,noteRef }) => {
-  const[title,setTitle]=useState('')
-  const[author,setAuthor]=useState('')
-  const[url,setUrl]=useState('')
+
   const sortedBlogs=blogs.toSorted((a,b) => b.likes-a.likes)
-
-
-  const addBlog=(event) => {
-    event.preventDefault()
-    handleBlogAdd({ title,author,url })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
 
   return(
     <>
@@ -26,15 +15,16 @@ const Dashboard=({ user,blogs,handleSignout,handleBlogAdd,handleBlogLike,handleB
       </p>
       <Togglable buttonlabel='Create newblog' ref={noteRef}>
         <Blogform
-          title={title} setTitle={setTitle}
-          author={author} setAuthor={setAuthor}
-          url={url} setUrl={setUrl}
-          addBlog={addBlog}
+          handleBlogAdd={handleBlogAdd}
         />
       </Togglable>
       <h3>Blogs</h3>
       {
-        sortedBlogs.map( blog => <Blog key={blog.id} user={user} blog={blog} handleBlogLike={handleBlogLike} handleBlogRemove={handleBlogRemove}/> )
+        sortedBlogs.map( blog => <Blog key={blog.id}
+          user={user}
+          blog={blog}
+          handleBlogLike={handleBlogLike}
+          handleBlogRemove={handleBlogRemove}/> )
       }
     </>
   )
