@@ -2,12 +2,18 @@
 describe('Blog App', function(){
   beforeEach(function(){
     cy.request('POST', 'http://localhost:3003/api/testing/resetdb')
-    const user={
-      name:'bhim chhetri',
+    const user1={
+      name:'user1',
       username:'arian',
       password:'Vchhetri123'
     }
-    cy.request( 'POST', 'http://localhost:3003/api/users', user )
+    const user2={
+      name:'user2',
+      username:'machaveli',
+      password:'machaveli123'
+    }
+    cy.request( 'POST', 'http://localhost:3003/api/users', user1 )
+    cy.request( 'POST', 'http://localhost:3003/api/users', user2 )
     cy.visit( 'http://localhost:5173/' )
   })
 
@@ -28,10 +34,12 @@ describe('Blog App', function(){
       cy.get('input:last').type('Vchhetri123')
       cy.contains('login').click()
     })
+
     it('succeds with correct credentials', function(){
       cy.contains('Logged in arian')
       cy.contains('logout')
     })
+
     it('fails with wrong credentials', function(){
       cy.contains('Authorization failed.')
     })
@@ -56,7 +64,7 @@ describe('Blog App', function(){
       cy.contains('The Script is to execute')
     })
 
-    it.only('users can like a blog',  function(){
+    it('users can like a blog',  function(){
       cy.contains('Create newblog').click()
       cy.get('#title').type('The Script is to execute')
       cy.get('#author').type('grisma ritu')
@@ -64,7 +72,18 @@ describe('Blog App', function(){
       cy.get('#blogsubmit').click()
       cy.contains('view').click()
       cy.contains('like').click()
-      cy.contains('like 0')
+      cy.contains('like 1')
+    })
+
+    it.only('blog creater can delete blog',function(){
+      cy.contains('Create newblog').click()
+      cy.get('#title').type('The Script is to execute')
+      cy.get('#author').type('grisma ritu')
+      cy.get('#url').type('https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test')
+      cy.get('#blogsubmit').click()
+      cy.contains('view').click()
+      cy.contains('remove').click()
+
     })
   })
 
