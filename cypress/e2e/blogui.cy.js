@@ -72,10 +72,14 @@ describe('Blog App', function(){
       cy.get('#blogsubmit').click()
       cy.contains('view').click()
       cy.contains('like').click()
+      cy.contains('like').click()
       cy.contains('like 1')
+      cy.contains('like').click()
+      cy.contains('like 2')
+
     })
 
-    it.only('blog creater can delete blog',function(){
+    it('blog creater can delete blog',function(){
       cy.contains('Create newblog').click()
       cy.get('#title').type('The Script is to execute')
       cy.get('#author').type('grisma ritu')
@@ -85,6 +89,34 @@ describe('Blog App', function(){
       cy.contains('remove').click()
 
     })
+  })
+
+  describe('test to ensure only the creator can see remove button and not anyone else', function(){
+    beforeEach(function(){
+      cy.get('input:first').type('arian')
+      cy.get('input:last').type('Vchhetri123')
+      cy.contains('login').click()
+      cy.contains('Create newblog').click()
+      cy.get('#title').type('The Script with second most likes')
+      cy.get('#author').type('green portand')
+      cy.get('#url').type('https://docs.cypress.io/api/commands/eq')
+      cy.get('#blogsubmit').click()
+    })
+
+    it('only creator can see delete button', function(){
+      cy.contains('view').click()
+      cy.contains('remove')
+    })
+
+    it('blog non-creator cant see  delete button', function(){
+      cy.contains('logout').click()
+      cy.get('input:first').type('machaveli')
+      cy.get('input:last').type('machaveli123')
+      cy.contains('login').click()
+      cy.contains('view').click()
+      cy.get('.blogdetail').should('not.contain','remove')
+    })
+
   })
 
 })
