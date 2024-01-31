@@ -1,4 +1,4 @@
-
+//forwardRef is used when ref is needed to pass to child component and later access the ref from parent component
 import { useState,forwardRef,useImperativeHandle } from 'react'
 import propTypes from 'prop-types'
 
@@ -18,7 +18,7 @@ const Togglable = forwardRef ( (props,refs) => {
 
   return(
     <div>
-      <div style={hideWhenVisible}><button onClick={toggleVisibility}>{props.buttonlabel}</button></div>
+      <div style={hideWhenVisible}><button  onClick={toggleVisibility}>{props.buttonlabel}</button></div>
       <div style={showWhenVisible}>
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
