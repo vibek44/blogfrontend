@@ -8,3 +8,5 @@ The frontend test is done using testing-library package family(jest,dom).
 The end to end(e2e) testing in done using cypress an alternative to selenium.
 
 //personal note,forwardRef is use to pass the ref and later access the ref to and from child component and useImperativeHandle to access the function in child component 
+
+eslint is used as linter for static code analysis
